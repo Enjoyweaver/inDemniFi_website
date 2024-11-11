@@ -112,24 +112,6 @@ function App() {
     }
   }, [publicKey, chainId, analyzed, apiKey]);
 
-  const connectButton = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accounts = await provider.listAccounts();
-        const { name, chainId } = await provider.getNetwork();
-        setNetwork(name);
-        setChainId(chainId);
-        setPublicKey(accounts[0]);
-      } catch (error) {
-        setMsg("Connection request denied. Please try again.");
-      }
-    } else {
-      setMsg("MetaMask is not installed or supported on this device.");
-    }
-  };
-
   const handleChainSelect = (chainId) => {
     setChainId(chainId);
   };
