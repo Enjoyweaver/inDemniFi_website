@@ -1,0 +1,223 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v4.0.44",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_materials_sheen"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Text",
+      "rotation": [
+        0.7071068286895752,
+        0,
+        0,
+        0.7071068286895752
+      ],
+      "translation": [
+        0.01041392982006073,
+        2.171492576599121,
+        -8.511537551879883
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_sheen": {
+          "sheenColorFactor": [
+            0.8898912668228149,
+            0.8317453861236572,
+            0.4230847656726837
+          ]
+        }
+      },
+      "name": "Grey",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.8055689334869385,
+        "roughnessFactor": 0
+      }
+    },
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_sheen": {
+          "sheenColorFactor": [
+            0.8785330057144165,
+            1,
+            0.4660176932811737
+          ],
+          "sheenRoughnessFactor": 0.06338027119636536
+        }
+      },
+      "name": "Blue",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.9636363387107849,
+        "roughnessFactor": 0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Text",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 59146,
+      "max": [
+        3.395153045654297,
+        0.10999999195337296,
+        0.254856675863266
+      ],
+      "min": [
+        -3.3969109058380127,
+        -0.10999999195337296,
+        -0.5881905555725098
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 59146,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 59146,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 303060,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 230546,
+      "max": [
+        4.950587272644043,
+        0.10999999195337296,
+        5.654857158660889
+      ],
+      "min": [
+        -4.93559455871582,
+        -0.10999999195337296,
+        -0.5881905555725098
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 230546,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 230546,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5125,
+      "count": 1180860,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 709752,
+      "byteOffset": 0,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 709752,
+      "byteOffset": 709752,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 473168,
+      "byteOffset": 1419504,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 606120,
+      "byteOffset": 1892672,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2766552,
+      "byteOffset": 2498792,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2766552,
+      "byteOffset": 5265344,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1844368,
+      "byteOffset": 8031896,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 4723440,
+      "byteOffset": 9876264,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Cet_data.bin",
+      "byteLength": 14599704
+    }
+  ]
+}

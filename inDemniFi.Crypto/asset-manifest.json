@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "./static/css/main.31fc75c7.css",
+    "main.js": "./static/js/main.8f99ddaa.js",
+    "static/media/Cert.mp4": "./static/media/Cert.c8d2cb844f5445d6c872.mp4",
+    "static/media/covalent.png": "./static/media/covalent.f2463f23fd781171d1a2.png",
+    "static/media/default-logo.png": "./static/media/default-logo.ac8f1277cf08cf1352fa.png",
+    "index.html": "./index.html",
+    "main.31fc75c7.css.map": "./static/css/main.31fc75c7.css.map",
+    "main.8f99ddaa.js.map": "./static/js/main.8f99ddaa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31fc75c7.css",
+    "static/js/main.8f99ddaa.js"
+  ]
+}
