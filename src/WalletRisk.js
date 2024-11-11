@@ -25,24 +25,14 @@ function App() {
   const [analyzed, setAnalyzed] = useState(false);
   const [txnSummaryData, setTxnSummaryData] = useState(null);
   const [showBody, setShowBody] = useState(true);
-  const [currentPage, setCurrentPage] = useState("home"); // 'home' is the default page
+  const [currentPage, setCurrentPage] = useState("home");
   const [netWorth, setNetWorth] = useState(0);
+  const [apiError, setApiError] = useState(null); // New state for API errors
+
   const handlePageChange = (pageName) => {
     setCurrentPage(pageName);
-
-    let pageContent;
-
-    switch (currentPage) {
-      case "auditorRankings":
-        pageContent = <AuditorRankings />;
-        break;
-      case "scu":
-        pageContent = <SCU />;
-        break;
-      default:
-        pageContent = <Body />;
-    }
   };
+
   const handlePassPublicKey = () => {
     setButtonPressed(true);
     setAnalyzed(true);
@@ -67,6 +57,12 @@ function App() {
           );
           setChains(excludeTestnet);
         }
+      })
+      .catch((error) => {
+        console.error("Error fetching wallet activity:", error);
+        setApiError(
+          "Unable to fetch wallet activity. Some features may not be available."
+        );
       });
   };
 
@@ -85,6 +81,12 @@ function App() {
           setData(newData);
           setNetWorth(totalValue);
         }
+      })
+      .catch((error) => {
+        console.error("Error fetching balances:", error);
+        setApiError(
+          "Unable to fetch balances. Some features may not be available."
+        );
       });
   };
 
@@ -107,7 +109,10 @@ function App() {
           setTxnSummaryData(res.data.items);
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching transaction summary:", error);
+          setApiError(
+            "Unable to fetch transaction summary. Some features may not be available."
+          );
         });
     }
   }, [publicKey, chainId, analyzed, apiKey]);
@@ -156,7 +161,7 @@ function App() {
           </button>
         )}
         {msg && <p>{msg}</p>}
-
+        {apiError && <p>{apiError}</p>} {/* Display API errors */}
         {publicKey && !analyzed && (
           <button
             className="dbtn"
@@ -230,28 +235,3 @@ function App() {
 }
 
 export default App;
-
-const transformForRecharts = (rawData) => {
-  const transformedData = rawData.reduce((acc, curr) => {
-    const singleTokenTimeSeries = curr.holdings.map((holdingsItem) => {
-      // Formatting the date string just a little...
-      const dateStr = holdingsItem.timestamp.slice(0, 10);
-      const date = new Date(dateStr);
-      const options = {
-        day: "numeric",
-        month: "short",
-      };
-      const formattedDate = date.toLocaleDateString("en-US", options);
-      return {
-        timestamp: formattedDate,
-        [curr.contract_ticker_symbol]: holdingsItem.close.quote,
-      };
-    });
-    const newArr = singleTokenTimeSeries.map((item, i) =>
-      Object.assign(item, acc[i])
-    );
-    return newArr;
-  }, []);
-
-  return transformedData;
-};

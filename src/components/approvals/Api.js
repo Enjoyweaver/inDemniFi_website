@@ -6,6 +6,7 @@ import Risk from "./Risk";
 function Api({ publicKey, chainId, txnSummaryData }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(null); // New state for API errors
   const approvalsEndpoint = `https://api.covalenthq.com/v1/${chainId}/approvals/${publicKey}/`;
   const apiKey = process.env.REACT_APP_COVALENT_API_KEY;
 
@@ -18,16 +19,25 @@ function Api({ publicKey, chainId, txnSummaryData }) {
           Authorization: `Basic ${btoa(apiKey + ":")}`,
         },
       })
-        .then((res) => res.json())
         .then((res) => {
-          console.log(res);
+          if (!res.ok) {
+            throw new Error(`API request failed with status ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((res) => {
           if (res.data && res.data.items) {
             setData(res.data.items);
+          } else {
+            setData([]);
           }
           setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
+          setApiError(
+            "Unable to fetch approvals data for this blockchain. It may not be supported."
+          );
           setLoading(false);
         });
     }
@@ -35,6 +45,15 @@ function Api({ publicKey, chainId, txnSummaryData }) {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (apiError) {
+    return (
+      <div className="noApprovals">
+        <div className="tokenTitle">Risk Assessment</div>
+        <p>{apiError}</p>
+      </div>
+    );
   }
 
   if (!data || !Array.isArray(data) || data.length === 0) {
@@ -52,13 +71,11 @@ function Api({ publicKey, chainId, txnSummaryData }) {
   return (
     <div>
       <div className="risk-container-title">Risk Assessment</div>
-      {/* Display Risk component even when there are no open approvals */}
       <Risk
         tokenItem={data.length > 0 ? data[0] : null}
         queryWalletAddress={publicKey}
         txnSummaryData={txnSummaryData}
       />
-      {/* Display TokenAllowance component for each item if there are approvals */}
       {data.map((item, index) => (
         <TokenAllowance
           key={index}
