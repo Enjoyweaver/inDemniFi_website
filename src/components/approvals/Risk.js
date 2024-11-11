@@ -78,40 +78,58 @@ const calculatePortfolioRisk = (
   return portfolioRisk.toFixed(2);
 };
 
-const Risk = ({ tokenItem, txnSummaryData }) => {
-  if (
-    !tokenItem ||
-    (Array.isArray(tokenItem) && tokenItem.length === 0) ||
-    !txnSummaryData ||
-    !txnSummaryData[0]
-  ) {
-    return <div>No open approvals or transaction data available</div>;
+const Risk = ({ tokenItems, txnSummaryData }) => {
+  if (!txnSummaryData || !txnSummaryData[0]) {
+    return <div>No transaction data available</div>;
   }
+
+  // Flatten spenders from all tokenItems
+  const spenders = tokenItems.reduce((acc, tokenItem) => {
+    if (tokenItem && tokenItem.spenders && tokenItem.spenders.length > 0) {
+      return acc.concat(tokenItem.spenders);
+    }
+    return acc;
+  }, []);
 
   const transactionCount = txnSummaryData[0]?.total_count || 0;
   const currentDate = new Date();
-  const approvalDates = tokenItem.spenders.map(
+
+  // Handle cases where there are no approvals
+  const approvalDates = spenders.map(
     (spender) => new Date(spender.block_signed_at)
   );
+
   const openApprovalRate = transactionCount
-    ? (tokenItem.spenders.length / transactionCount) * 100
+    ? (spenders.length / transactionCount) * 100
     : 0;
 
-  const oldestApprovalDate = new Date(
-    Math.min(...approvalDates.map((date) => date.getTime()))
-  );
-  const difference = currentDate - oldestApprovalDate;
-  const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
+  let daysDifference = 0;
+  if (approvalDates.length > 0) {
+    const oldestApprovalDate = new Date(
+      Math.min(...approvalDates.map((date) => date.getTime()))
+    );
+    const difference = currentDate - oldestApprovalDate;
+    daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
+  }
 
-  const safeApprovals = tokenItem.spenders.filter((spender) =>
+  const ageOfWalletInMilliseconds =
+    currentDate -
+    new Date(
+      txnSummaryData[0]?.earliest_transaction?.block_signed_at || currentDate
+    );
+  const ageOfWallet = Math.floor(
+    ageOfWalletInMilliseconds / (1000 * 60 * 60 * 24)
+  );
+
+  const safeApprovals = spenders.filter((spender) =>
     safeAddresses.includes(spender.spender_address.toLowerCase())
   ).length;
 
-  const blacklistedApprovals = tokenItem.spenders.filter((spender) =>
+  const blacklistedApprovals = spenders.filter((spender) =>
     blacklistedAddresses.includes(spender.spender_address.toLowerCase())
   ).length;
 
-  const unknownAddresses = tokenItem.spenders
+  const unknownAddresses = spenders
     .filter(
       (spender) =>
         !safeAddresses.includes(spender.spender_address.toLowerCase()) &&
@@ -119,27 +137,19 @@ const Risk = ({ tokenItem, txnSummaryData }) => {
     )
     .map((spender) => spender.spender_address.toLowerCase());
 
-  const lowRiskApprovals = tokenItem.spenders.filter((spender) =>
-    safeAddresses.includes(spender.spender_address.toLowerCase())
-  ).length;
+  const lowRiskApprovals = safeApprovals;
+  const mediumRiskApprovals = unknownAddresses.length;
+  const highRiskApprovals = blacklistedApprovals;
 
-  const mediumRiskApprovals = tokenItem.spenders.filter((spender) =>
-    unknownAddresses.includes(spender.spender_address.toLowerCase())
-  ).length;
-
-  const highRiskApprovals = tokenItem.spenders.filter((spender) =>
-    blacklistedAddresses.includes(spender.spender_address.toLowerCase())
-  ).length;
-
-  const unlimitedApprovals = tokenItem.spenders.filter(
+  const unlimitedApprovals = spenders.filter(
     (spender) => spender.allowance === "UNLIMITED"
   ).length;
 
-  const complianceRisk = tokenItem.spenders.filter((spender) =>
+  const complianceRisk = spenders.filter((spender) =>
     complianceList.includes(spender.spender_address.toLowerCase())
   ).length;
 
-  const nonComplianceRisk = tokenItem.spenders.filter(
+  const nonComplianceRisk = spenders.filter(
     (spender) => !complianceList.includes(spender.spender_address.toLowerCase())
   ).length;
 
@@ -147,14 +157,6 @@ const Risk = ({ tokenItem, txnSummaryData }) => {
     complianceRisk + nonComplianceRisk
       ? (complianceRisk / (complianceRisk + nonComplianceRisk)) * 100
       : 0;
-
-  const earliestTransactionDate = new Date(
-    txnSummaryData[0]?.earliest_transaction?.block_signed_at || currentDate
-  );
-  const ageOfWalletInMilliseconds = currentDate - earliestTransactionDate;
-  const ageOfWallet = Math.floor(
-    ageOfWalletInMilliseconds / (1000 * 60 * 60 * 24)
-  );
 
   const totalApprovals = approvalDates.length;
   const sumOfApprovalAges = approvalDates.reduce(
@@ -164,33 +166,28 @@ const Risk = ({ tokenItem, txnSummaryData }) => {
   const averageApprovalAge = totalApprovals
     ? sumOfApprovalAges / totalApprovals
     : 0;
+
   const approvalExposure = ageOfWallet
     ? (averageApprovalAge / ageOfWallet) * 100
     : 0;
 
-  const visitedProtocols = tokenItem.spenders.filter((spender) =>
+  const visitedProtocols = spenders.filter((spender) =>
     Protocol.some(
       (protocol) =>
         protocol.address.toLowerCase() === spender.spender_address.toLowerCase()
     )
   );
 
-  const knownProtocolsCount = visitedProtocols.filter((spender) =>
-    Protocol.some(
-      (protocol) =>
-        protocol.address.toLowerCase() === spender.spender_address.toLowerCase()
-    )
-  ).length;
+  const knownProtocolsCount = visitedProtocols.length;
 
   const totalVisitedProtocols = visitedProtocols.length;
   const protocolRiskRate = totalVisitedProtocols
     ? (1 - knownProtocolsCount / totalVisitedProtocols) * 100
     : 0;
 
-  const unlimitedApprovalPercentage = calculateUnlimitedApprovalPercentage(
-    unlimitedApprovals,
-    tokenItem.spenders.length
-  );
+  const unlimitedApprovalPercentage = totalApprovals
+    ? (unlimitedApprovals / totalApprovals) * 100
+    : 0;
 
   const portfolioRisk = calculatePortfolioRisk(
     openApprovalRate,
@@ -218,7 +215,7 @@ const Risk = ({ tokenItem, txnSummaryData }) => {
           <div style={{ color: "#3f8ef6" }}>
             Number of Open Token Approvals:
           </div>
-          <div style={{ color: "lightblue" }}>{tokenItem.spenders.length}</div>
+          <div style={{ color: "lightblue" }}>{spenders.length}</div>
         </div>
         <div className="risk-row">
           <div style={{ color: "#3f8ef6" }}>Age of Wallet:</div>

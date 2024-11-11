@@ -6,7 +6,7 @@ import Risk from "./Risk";
 function Api({ publicKey, chainId, txnSummaryData }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [apiError, setApiError] = useState(null); // New state for API errors
+  const [apiError, setApiError] = useState(null);
   const approvalsEndpoint = `https://api.covalenthq.com/v1/${chainId}/approvals/${publicKey}/`;
   const apiKey = process.env.REACT_APP_COVALENT_API_KEY;
 
@@ -56,33 +56,30 @@ function Api({ publicKey, chainId, txnSummaryData }) {
     );
   }
 
-  if (!data || !Array.isArray(data) || data.length === 0) {
-    return (
-      <div className="noApprovals">
-        <div className="tokenTitle">Risk Assessment</div>
-        <p>
-          Your wallet address on this blockchain currently has no open token
-          approvals and is practicing web3 safely.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div>
       <div className="risk-container-title">Risk Assessment</div>
       <Risk
-        tokenItem={data.length > 0 ? data[0] : null}
+        tokenItems={data}
         queryWalletAddress={publicKey}
         txnSummaryData={txnSummaryData}
       />
-      {data.map((item, index) => (
-        <TokenAllowance
-          key={index}
-          tokenItem={item}
-          queryWalletAddress={publicKey}
-        />
-      ))}
+      {data.length === 0 ? (
+        <div className="noApprovals">
+          <p>
+            Your wallet address on this blockchain currently has no open token
+            approvals and is practicing web3 safely.
+          </p>
+        </div>
+      ) : (
+        data.map((item, index) => (
+          <TokenAllowance
+            key={index}
+            tokenItem={item}
+            queryWalletAddress={publicKey}
+          />
+        ))
+      )}
     </div>
   );
 }
