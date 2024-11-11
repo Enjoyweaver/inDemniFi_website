@@ -10,6 +10,7 @@ import WalletRisk from "./WalletRisk";
 import Technician from "./components/Technician";
 import Certifications from "./components/Certifications";
 import VyperQuiz from "./components/quiz/VyperQuiz";
+import WIM from "./components/WIM";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -32,6 +33,9 @@ function App() {
         return <Certifications />;
       case "vyperQuiz":
         return <VyperQuiz />;
+
+      case "wim":
+        return <WIM />;
       default:
         return <Intro />;
     }

@@ -19,6 +19,7 @@ const Navbar = ({ onPageChange, currentPage }) => {
     { page: "Certifications", label: "Certifications" },
     { page: "Technician", label: "Exploit Technicians" },
     { page: "vyperQuiz", label: "Vyper Security Quiz" },
+    { page: "wim", label: "Create a wallet" },
   ];
 
   return (
@@ -35,17 +36,19 @@ const Navbar = ({ onPageChange, currentPage }) => {
                 style={{ marginRight: "20px" }}
                 key={item.page}
               >
-                {item.page === "github" ? (
+                {item.url ? (
+                  // Render external links
                   <a
-                    href="https://github.com/inDemniFi"
+                    href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={linkStyle}
                     className="github-link"
                   >
-                    GitHub
+                    {item.label}
                   </a>
                 ) : (
+                  // Render internal navigation buttons
                   <button
                     style={{
                       border: "none",
