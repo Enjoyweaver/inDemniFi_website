@@ -16,12 +16,25 @@ function WIMWalletCreation() {
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isWalletReady, setIsWalletReady] = useState(false);
   const [showPrivateKey, setShowPrivateKey] = useState(false);
+  const [isNewWallet, setIsNewWallet] = useState(false);
 
   // On component mount, check for stored wallet
   useEffect(() => {
     const encryptedWallet = localStorage.getItem("indemnifiWallet");
     if (encryptedWallet) {
       setHasStoredWallet(true);
+      setWallet(null);
+      setIsWalletReady(false);
+      setShowSeedPhrase(false);
+      setIsNewWallet(false); // Ensure it's false when wallet exists
+      // Do not reset seedPhraseConfirmed here
+    } else {
+      setHasStoredWallet(false);
+      setWallet(null);
+      setIsWalletReady(false);
+      setSeedPhraseConfirmed(false);
+      setShowSeedPhrase(false);
+      setIsNewWallet(false);
     }
   }, []);
 
@@ -29,6 +42,7 @@ function WIMWalletCreation() {
     const randomWallet = ethers.Wallet.createRandom();
     setWallet(randomWallet);
     setShowSeedPhrase(true);
+    setIsNewWallet(true); // Added this line
 
     // Connect to the Goerli test network using the default provider
     const provider = ethers.getDefaultProvider("goerli");
@@ -78,6 +92,8 @@ function WIMWalletCreation() {
       setPassword("");
       setErrorMessage("");
       setIsWalletReady(true);
+      setIsNewWallet(false); // Added this line
+      setSeedPhraseConfirmed(true); // Added this line
 
       // Connect to the Goerli test network using the default provider
       const provider = ethers.getDefaultProvider("goerli");
@@ -96,6 +112,7 @@ function WIMWalletCreation() {
       setWallet(importedWallet);
       setSeedPhraseConfirmed(true);
       setIsWalletReady(true);
+      setIsNewWallet(false); // Added this line
 
       // Connect to the Goerli test network using the default provider
       const provider = ethers.getDefaultProvider("goerli");
@@ -113,6 +130,7 @@ function WIMWalletCreation() {
       setWallet(importedWallet);
       setSeedPhraseConfirmed(true);
       setIsWalletReady(true);
+      setIsNewWallet(false); // Added this line
 
       // Connect to the Goerli test network using the default provider
       const provider = ethers.getDefaultProvider("goerli");
@@ -293,7 +311,7 @@ function WIMWalletCreation() {
       )}
 
       {/* Seed Phrase Confirmation */}
-      {!seedPhraseConfirmed && !showSeedPhrase && wallet && (
+      {isNewWallet && !seedPhraseConfirmed && !showSeedPhrase && wallet && (
         <div className="seed-phrase-confirmation">
           <h3>Confirm Your Seed Phrase</h3>
           <p>

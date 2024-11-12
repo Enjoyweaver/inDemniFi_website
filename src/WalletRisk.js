@@ -11,8 +11,6 @@ import { transformData } from "./utils/utils";
 import WalletSummary from "./components/activity/WalletSummary";
 import TokenAllocation from "./components/activity/TokenAllocation";
 import Portfolio from "./components/Portfolio";
-import AuditorRankings from "./components/AuditorRankings";
-import SCU from "./components/SCU";
 
 function App() {
   const [publicKey, setPublicKey] = useState();
@@ -27,7 +25,7 @@ function App() {
   const [showBody, setShowBody] = useState(true);
   const [currentPage, setCurrentPage] = useState("home");
   const [netWorth, setNetWorth] = useState(0);
-  const [apiError, setApiError] = useState(null); // New state for API errors
+  const [apiError, setApiError] = useState(null);
 
   const handlePageChange = (pageName) => {
     setCurrentPage(pageName);

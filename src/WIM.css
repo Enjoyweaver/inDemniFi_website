@@ -26,7 +26,8 @@
 .create-wallet-button,
 .download-wallet-button,
 .connect-wallet-button,
-.send-transaction-button {
+.send-transaction-button,
+.import-wallet-button {
   margin-top: 1em;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.2em;
@@ -41,7 +42,8 @@
 .create-wallet-button:hover,
 .download-wallet-button:hover,
 .connect-wallet-button:hover,
-.send-transaction-button:hover {
+.send-transaction-button:hover,
+.import-wallet-button:hover {
   border: 1px solid grey;
   background-color: #5d9bf7;
 }
@@ -49,60 +51,38 @@
 .create-wallet-button:active,
 .download-wallet-button:active,
 .connect-wallet-button:active,
-.send-transaction-button:active {
+.send-transaction-button:active,
+.import-wallet-button:active {
   border: 1px solid grey;
   background-color: #004aad;
 }
 
-.wallet-details {
-  margin-top: 30px;
-  text-align: left;
+.unlock-wallet-container {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
 }
 
-.wallet-details h2 {
-  font-size: 1.8em;
-  color: #3f8ef6;
+.unlock-wallet-container input[type="password"] {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
 }
 
-.wallet-actions {
+.initial-options {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   margin-top: 20px;
 }
 
-.wallet-balance {
-  font-size: 1.2em;
-  color: lightblue;
-}
-
-@media screen and (max-width: 600px) {
-  .wim-wallet-creation-container {
-    padding: 15px;
-  }
-
-  .wim-wallet-creation-container h1,
-  .wim-wallet-creation-container h2 {
-    font-size: 2em;
-  }
-
-  .create-wallet-button,
-  .download-wallet-button,
-  .connect-wallet-button,
-  .send-transaction-button {
-    font-size: 1em;
-  }
-
-  .wallet-details p {
-    font-size: 0.9em;
-  }
-}
-
-/* Info Popup */
 .info-popup {
   background-color: rgba(0, 0, 0, 0.8);
   color: #f2f7f7;
@@ -147,7 +127,122 @@
   margin: 20px 0;
 }
 
+.seed-phrase-confirmation textarea {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+.password-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.password-container input[type="password"] {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
 .error-message {
   color: #ff6b6b;
   margin-top: 10px;
+}
+
+.wallet-details {
+  margin-top: 30px;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.wallet-details h2 {
+  font-size: 1.8em;
+  color: #3f8ef6;
+}
+
+.wallet-details .token-list {
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.wallet-details .token-list .token-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.wallet-details .token-list .token-item:last-child {
+  border-bottom: none;
+}
+
+.wallet-details .token-list .token-item strong {
+  color: #f2f7f7;
+}
+
+.wallet-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.wallet-balance {
+  font-size: 1.2em;
+  color: lightblue;
+}
+
+.toggle-private-key-button {
+  margin-top: 1em;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.2em;
+  border: 1px solid black;
+  padding: 10px 20px;
+  color: #f2f7f7;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3f8ef6;
+}
+
+.toggle-private-key-button:hover {
+  border: 1px solid grey;
+  background-color: #5d9bf7;
+}
+
+@media screen and (max-width: 600px) {
+  .wim-wallet-creation-container {
+    padding: 15px;
+  }
+
+  .wim-wallet-creation-container h1,
+  .wim-wallet-creation-container h2 {
+    font-size: 2em;
+  }
+
+  .create-wallet-button,
+  .download-wallet-button,
+  .connect-wallet-button,
+  .send-transaction-button,
+  .import-wallet-button {
+    font-size: 1em;
+  }
+
+  .wallet-details p {
+    font-size: 0.9em;
+  }
 }
