@@ -219,6 +219,11 @@ function WIMWalletCreation() {
         Generate a new wallet address to start using the inDemniFi Wallet
         Insurance Model (WIM).
       </p>
+      <p className="create-wallet-button">
+        But dont transfer funds to this wallet as it is in beta testing /
+        building and a work-in-progress, but you are welcome to create a wallet
+        and help us test this out and give us feebback.
+      </p>
 
       {/* Unlock Wallet */}
       {hasStoredWallet && !wallet && (
@@ -249,8 +254,7 @@ function WIMWalletCreation() {
             className="create-wallet-button"
             onClick={() => setShowInfoPopup(true)}
           >
-            Create New Wallet (but dont use this wallet as this is beta testing
-            / building and a work-in-progress)
+            Create New Wallet
           </button>
           <button
             className="import-wallet-button"
