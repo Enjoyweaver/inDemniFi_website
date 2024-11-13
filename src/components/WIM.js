@@ -249,7 +249,8 @@ function WIMWalletCreation() {
             className="create-wallet-button"
             onClick={() => setShowInfoPopup(true)}
           >
-            Create New Wallet
+            Create New Wallet (but dont use this wallet as this is beta testing
+            / building and a work-in-progress)
           </button>
           <button
             className="import-wallet-button"
