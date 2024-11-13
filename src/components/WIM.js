@@ -222,7 +222,7 @@ function WIMWalletCreation() {
       <p className="create-wallet-button">
         But dont transfer funds to this wallet as it is in beta testing /
         building and a work-in-progress, but you are welcome to create a wallet
-        and help us test this out and give us feebback.
+        and help us test this out and give us feedback.
       </p>
 
       {/* Unlock Wallet */}
