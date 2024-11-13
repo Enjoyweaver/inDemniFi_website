@@ -9,7 +9,7 @@ import SCU from "./components/SCU";
 import WalletRisk from "./WalletRisk";
 import Technician from "./components/Technician";
 import Certifications from "./components/Certifications";
-import VyperQuiz from "./components/quiz/VyperQuiz";
+import VyperQuiz from "./components/VyperQuiz";
 import WIM from "./components/WIM";
 
 function App() {
