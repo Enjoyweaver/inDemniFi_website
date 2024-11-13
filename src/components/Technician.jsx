@@ -81,7 +81,7 @@ const Technician = () => {
           <h3>Crypto Exploit Technicians</h3>
           <p>
             Those that earn this distinction will receive this to permanently
-            display on-chain and will have their profile listed here.
+            display onchain and will have their profile listed here.
           </p>
           <video autoPlay loop muted width="840" height="660">
             <source src={videoFile} type="video/mp4" />

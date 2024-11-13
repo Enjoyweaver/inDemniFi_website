@@ -97,14 +97,15 @@ const VyperQuiz = () => {
     <div className="quiz-container">
       {!publicKey ? (
         <div className="connect-wallet">
-          <p>
+          <h2 className="header2">
             Those that get a passing score will earn a similar NFT to the one
             below once we get time to create it.{" "}
-          </p>
-          <p>
+          </h2>
+          <h2 className="header2">
             But for now, you are welcome to take as many practice tests as you
             wish while we add more questions while its still being daoveloped.
-          </p>
+          </h2>
+
           <video autoPlay loop muted width="840" height="660">
             <source src={videoFile} type="video/mp4" />
           </video>
