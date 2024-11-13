@@ -103,7 +103,7 @@ const VyperQuiz = () => {
           </p>
           <p>
             But for now, you are welcome to take as many practice tests as you
-            wish while we add more questions while its still being developed.
+            wish while we add more questions while its still being daoveloped.
           </p>
           <video autoPlay loop muted width="840" height="660">
             <source src={videoFile} type="video/mp4" />
