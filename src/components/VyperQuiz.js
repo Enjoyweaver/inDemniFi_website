@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import QuizResultsStorage from "./QuizResultsStorage";
-import { introQuestions, expertQuestions } from "./quizQuestions";
+import QuizResultsStorage from "./quiz/QuizResultsStorage";
+import { introQuestions, expertQuestions } from "./quiz/quizQuestions";
+import videoFile from "../assets/Cert.mp4";
 
 const VyperQuiz = () => {
   // Existing state
@@ -96,6 +97,17 @@ const VyperQuiz = () => {
     <div className="quiz-container">
       {!publicKey ? (
         <div className="connect-wallet">
+          <p>
+            Those that get a passing score will earn a similar NFT to the one
+            below once we get time to create it.{" "}
+          </p>
+          <p>
+            But for now, you are welcome to take as many practice tests as you
+            wish while we add more questions for you to practice with.
+          </p>
+          <video autoPlay loop muted width="840" height="660">
+            <source src={videoFile} type="video/mp4" />
+          </video>
           <h2>Connect Your Wallet to Start the Vyper Security Quiz</h2>
           <button className="wbtn" onClick={connectButton}>
             Connect MetaMask
