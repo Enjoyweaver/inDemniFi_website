@@ -156,22 +156,33 @@ function App() {
     <div>
       <div>
         <Body />
-        <div className="walletInput">
-          <input
-            type="text"
-            placeholder="Enter Wallet Address"
-            value={inputWallet}
-            onChange={(e) => setInputWallet(e.target.value)}
-          />
-          <button onClick={handlePassPublicKey}>Analyze Wallet</button>
-        </div>
         {!publicKey && (
           <button className="wbtn" onClick={connectButton}>
             Connect Your MetaMask Wallet
           </button>
         )}
+        {publicKey && (
+          <div className="walletInput">
+            <p>Connected Wallet: {publicKey}</p>
+            <label htmlFor="walletAddress" className="walletLabel">
+              Enter Wallet Address (leave empty to analyze connected wallet):
+            </label>
+            <input
+              type="text"
+              id="walletAddress"
+              value={inputWallet}
+              onChange={(e) => setInputWallet(e.target.value)}
+            />
+            <button onClick={handlePassPublicKey}>Analyze Wallet</button>
+          </div>
+        )}
         {msg && <p>{msg}</p>}
         {apiError && <p>{apiError}</p>} {/* Display API errors */}
+        {analyzed && (
+          <div className="walletAddress">
+            <p>Analyzing wallet address: {activeWallet}</p>
+          </div>
+        )}
         {buttonPressed && data && (
           <div className="Transactions">
             <ChainSelector

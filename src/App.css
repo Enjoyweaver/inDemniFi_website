@@ -879,3 +879,50 @@
   width: 600px;
   margin: auto;
 }
+
+.walletInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.walletLabel {
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  color: #f2f7f7;
+  text-align: center;
+}
+
+.walletInput input {
+  width: 300px;
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1em;
+}
+
+.walletInput button {
+  margin-top: 0.5em;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.2em;
+  border: 1px solid black;
+  padding: 8px 16px;
+  color: #f2f7f7;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3f8ef6;
+}
+
+.walletInput button:hover {
+  border: 1px solid grey;
+  background-color: #5d9bf7;
+  color: #ffffff;
+}
+
+.walletInput p {
+  color: #00bfff;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
