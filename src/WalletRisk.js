@@ -11,11 +11,12 @@ import { transformData } from "./utils/utils";
 import WalletSummary from "./components/activity/WalletSummary";
 import TokenAllocation from "./components/activity/TokenAllocation";
 import Portfolio from "./components/Portfolio";
+import whitelistedAddresses from "./components/whitelisted/underwriting";
 
 function App() {
   const [publicKey, setPublicKey] = useState();
-  const [inputWallet, setInputWallet] = useState(""); // For manually entered wallet
-  const [activeWallet, setActiveWallet] = useState(""); // Used for analysis
+  const [inputWallet, setInputWallet] = useState("");
+  const [activeWallet, setActiveWallet] = useState("");
   const [network, setNetwork] = useState();
   const [chainId, setChainId] = useState();
   const [msg, setMsg] = useState();
@@ -37,7 +38,12 @@ function App() {
     setButtonPressed(true);
     setAnalyzed(true);
     setShowBody(false);
-    setActiveWallet(inputWallet || publicKey); // Use inputWallet if provided
+    // Only allow inputting other wallets if the connected wallet is whitelisted
+    if (isWhitelisted(publicKey)) {
+      setActiveWallet(inputWallet || publicKey);
+    } else {
+      setActiveWallet(publicKey);
+    }
   };
 
   const apiKey = process.env.REACT_APP_COVALENT_API_KEY;
@@ -127,7 +133,7 @@ function App() {
         const { name, chainId } = await provider.getNetwork();
         setNetwork(name);
         setChainId(chainId);
-        setPublicKey(accounts[0]);
+        setPublicKey(accounts[0].toLowerCase()); // Convert to lowercase for consistency
       } catch (error) {
         setMsg("Connection request denied. Please try again.");
       }
@@ -138,6 +144,10 @@ function App() {
 
   const handleChainSelect = (chainId) => {
     setChainId(chainId);
+  };
+
+  const isWhitelisted = (address) => {
+    return whitelistedAddresses.includes(address.toLowerCase());
   };
 
   useEffect(() => {
@@ -164,15 +174,22 @@ function App() {
         {publicKey && (
           <div className="walletInput">
             <p>Connected Wallet: {publicKey}</p>
-            <label htmlFor="walletAddress" className="walletLabel">
-              Enter Wallet Address (leave empty to analyze connected wallet):
-            </label>
-            <input
-              type="text"
-              id="walletAddress"
-              value={inputWallet}
-              onChange={(e) => setInputWallet(e.target.value)}
-            />
+            {isWhitelisted(publicKey) ? (
+              <>
+                <label htmlFor="walletAddress" className="walletLabel">
+                  Enter Wallet Address (leave empty to analyze connected
+                  wallet):
+                </label>
+                <input
+                  type="text"
+                  id="walletAddress"
+                  value={inputWallet}
+                  onChange={(e) => setInputWallet(e.target.value)}
+                />
+              </>
+            ) : (
+              <p>You are not authorized to analyze other wallets.</p>
+            )}
             <button onClick={handlePassPublicKey}>Analyze Wallet</button>
           </div>
         )}
