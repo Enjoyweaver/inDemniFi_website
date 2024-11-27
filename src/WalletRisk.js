@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  NavLink,
+} from "react-router-dom";
 import "./App.css";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
@@ -12,6 +18,9 @@ import WalletSummary from "./components/activity/WalletSummary";
 import TokenAllocation from "./components/activity/TokenAllocation";
 import Portfolio from "./components/Portfolio";
 import whitelistedAddresses from "./components/whitelisted/underwriting";
+import ProtocolsVisited from "./components/ProtocolsVisited";
+import WalletInteractions from "./components/WalletInteractions";
+import ProfitLossAnalysis from "./components/ProfitLossAnalysis";
 
 function App() {
   const [publicKey, setPublicKey] = useState();
@@ -163,7 +172,7 @@ function App() {
   }, [activeWallet, chainId, analyzed]);
 
   return (
-    <div>
+    <Router>
       <div>
         <Body />
         {!publicKey && (
@@ -201,44 +210,120 @@ function App() {
           </div>
         )}
         {buttonPressed && data && (
-          <div className="Transactions">
+          <>
+            {/* Navigation Tabs */}
+            <div className="pageTabs">
+              <NavLink
+                exact
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "pageTabButton active" : "pageTabButton"
+                }
+              >
+                Risk Underwriting
+              </NavLink>
+              <NavLink
+                to="/protocols"
+                className={({ isActive }) =>
+                  isActive ? "pageTabButton active" : "pageTabButton"
+                }
+              >
+                Protocols Visited
+              </NavLink>
+              <NavLink
+                to="/interactions"
+                className={({ isActive }) =>
+                  isActive ? "pageTabButton active" : "pageTabButton"
+                }
+              >
+                Wallet Interactions
+              </NavLink>
+              <NavLink
+                to="/profitLoss"
+                className={({ isActive }) =>
+                  isActive ? "pageTabButton active" : "pageTabButton"
+                }
+              >
+                Profit/Loss Analysis
+              </NavLink>
+            </div>
+            {/* Chain Selector appears on all pages */}
             <ChainSelector
               chains={chains}
               handleChainSelect={handleChainSelect}
             />
-            <div className="tokenTitle">Wallet Summary</div>
-            <div className="summary">
-              {netWorth && <div className="value">${netWorth.toFixed(2)}</div>}
-              <WalletSummary
-                walletAddress={activeWallet}
-                chainId={chainId}
-                chains={chains}
-                txnSummaryData={txnSummaryData}
+            {/* Routes */}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <div className="Transactions">
+                    <div className="tokenTitle">Wallet Summary</div>
+                    <div className="summary">
+                      {netWorth && (
+                        <div className="value">${netWorth.toFixed(2)}</div>
+                      )}
+                      <WalletSummary
+                        walletAddress={activeWallet}
+                        chainId={chainId}
+                        chains={chains}
+                        txnSummaryData={txnSummaryData}
+                      />
+                      <TokenAllocation
+                        chainId={chainId}
+                        walletAddress={activeWallet}
+                        data={data}
+                      />
+                    </div>
+                    <Api
+                      publicKey={activeWallet}
+                      chainId={chainId}
+                      txnSummaryData={txnSummaryData}
+                    />
+                    <div className="tokenTitle">Historical Transactions</div>
+                    <Transactions address={activeWallet} chainId={chainId} />
+                    <div className="tokenTitle">Token Balances</div>
+                    <TokenBalances address={activeWallet} chainId={chainId} />
+                    <div className="tokenTitle">30 Day Token Value</div>
+                    <Portfolio publicKey={activeWallet} chainId={chainId} />
+                  </div>
+                }
               />
-              <TokenAllocation
-                chainId={chainId}
-                walletAddress={activeWallet}
-                data={data}
+              <Route
+                path="/protocols"
+                element={
+                  <ProtocolsVisited
+                    walletAddress={activeWallet}
+                    chainId={chainId}
+                  />
+                }
               />
-            </div>
-            <Api
-              publicKey={activeWallet}
-              chainId={chainId}
-              txnSummaryData={txnSummaryData}
-            />
-            <div className="tokenTitle"> Historical Transactions</div>
-            <Transactions address={activeWallet} chainId={chainId} />
-            <div className="tokenTitle">Token Balances</div>
-            <TokenBalances address={activeWallet} chainId={chainId} />
-            <div className="tokenTitle">30 Day Token Value</div>
-            <Portfolio publicKey={activeWallet} chainId={chainId} />
-          </div>
+              <Route
+                path="/interactions"
+                element={
+                  <WalletInteractions
+                    walletAddress={activeWallet}
+                    chainId={chainId}
+                  />
+                }
+              />
+              <Route
+                path="/profitLoss"
+                element={
+                  <ProfitLossAnalysis
+                    walletAddress={activeWallet}
+                    chainId={chainId}
+                  />
+                }
+              />
+            </Routes>
+          </>
         )}
         <div className="footer">
           <Footer />
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

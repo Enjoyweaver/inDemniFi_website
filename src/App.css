@@ -926,3 +926,77 @@
   font-size: 1em;
   margin-bottom: 0.5em;
 }
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  background-color: #3f8ef6;
+  color: #f2f7f7;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.tabButton.active {
+  background-color: #004aad;
+}
+
+.tabButton:hover {
+  background-color: #5d9bf7;
+}
+
+.tabButton:focus {
+  outline: none;
+}
+
+/* Container for page navigation tabs */
+.pageTabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  border-bottom: 2px solid #ccc; /* Add a separator to distinguish from blockchain tabs */
+  padding-bottom: 10px;
+  gap: 10px; /* Space between tabs */
+}
+
+/* Navigation tab buttons */
+.pageTabButton {
+  background-color: #2d89ff; /* Distinct blue for navigation tabs */
+  color: #fff; /* White text for contrast */
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: 1px solid #2d89ff; /* Match border with background color */
+  border-radius: 5px; /* Rounded edges for a tab-like look */
+  text-decoration: none; /* Remove underline for links */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+/* Hover effect */
+.pageTabButton:hover {
+  background-color: #1a5fbf; /* Slightly darker blue on hover */
+  transform: translateY(-2px); /* Lift the button on hover */
+}
+
+/* Active tab styling */
+.pageTabButton.active {
+  background-color: #1a5fbf; /* Highlight active tab with darker blue */
+  border-bottom: 2px solid #fff; /* White underline for the active tab */
+  cursor: default; /* Indicate it's the active page */
+}
+
+/* Adjust text alignment for a tab-like look */
+.pageTabButton:focus {
+  outline: none; /* Remove default focus outline */
+  border: 1px solid #fff; /* White border for focus */
+}
