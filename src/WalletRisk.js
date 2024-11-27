@@ -14,6 +14,8 @@ import Portfolio from "./components/Portfolio";
 
 function App() {
   const [publicKey, setPublicKey] = useState();
+  const [inputWallet, setInputWallet] = useState(""); // For manually entered wallet
+  const [activeWallet, setActiveWallet] = useState(""); // Used for analysis
   const [network, setNetwork] = useState();
   const [chainId, setChainId] = useState();
   const [msg, setMsg] = useState();
@@ -35,12 +37,13 @@ function App() {
     setButtonPressed(true);
     setAnalyzed(true);
     setShowBody(false);
+    setActiveWallet(inputWallet || publicKey); // Use inputWallet if provided
   };
 
   const apiKey = process.env.REACT_APP_COVALENT_API_KEY;
 
-  const fetchWalletActivity = (publicKey) => {
-    const walletActivityEndpoint = `https://api.covalenthq.com/v1/labs/activity/${publicKey}/`;
+  const fetchWalletActivity = (wallet) => {
+    const walletActivityEndpoint = `https://api.covalenthq.com/v1/labs/activity/${wallet}/`;
     fetch(walletActivityEndpoint, {
       method: "GET",
       headers: {
@@ -64,8 +67,8 @@ function App() {
       });
   };
 
-  const fetchBalances = (publicKey, chainId) => {
-    const balancesEndpoint = `https://api.covalenthq.com/v1/${chainId}/address/${publicKey}/balances_v2/`;
+  const fetchBalances = (wallet, chainId) => {
+    const balancesEndpoint = `https://api.covalenthq.com/v1/${chainId}/address/${wallet}/balances_v2/`;
     fetch(balancesEndpoint, {
       method: "GET",
       headers: {
@@ -89,8 +92,8 @@ function App() {
   };
 
   useEffect(() => {
-    if (publicKey && chainId && analyzed) {
-      const txnSummaryEndpoint = `https://api.covalenthq.com/v1/${chainId}/address/${publicKey}/transactions_summary/`;
+    if (activeWallet && chainId && analyzed) {
+      const txnSummaryEndpoint = `https://api.covalenthq.com/v1/${chainId}/address/${activeWallet}/transactions_summary/`;
       fetch(txnSummaryEndpoint, {
         method: "GET",
         headers: {
@@ -113,7 +116,7 @@ function App() {
           );
         });
     }
-  }, [publicKey, chainId, analyzed, apiKey]);
+  }, [activeWallet, chainId, analyzed, apiKey]);
 
   const connectButton = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -138,59 +141,38 @@ function App() {
   };
 
   useEffect(() => {
-    if (publicKey && analyzed) {
-      fetchWalletActivity(publicKey);
+    if (activeWallet && analyzed) {
+      fetchWalletActivity(activeWallet);
     }
-  }, [publicKey, analyzed]);
+  }, [activeWallet, analyzed]);
 
   useEffect(() => {
-    if (publicKey && chainId && analyzed) {
-      fetchBalances(publicKey, chainId);
+    if (activeWallet && chainId && analyzed) {
+      fetchBalances(activeWallet, chainId);
     }
-  }, [publicKey, chainId, analyzed]);
+  }, [activeWallet, chainId, analyzed]);
 
   return (
     <div>
       <div>
         <Body />
-        {publicKey ? null : (
+        <div className="walletInput">
+          <input
+            type="text"
+            placeholder="Enter Wallet Address"
+            value={inputWallet}
+            onChange={(e) => setInputWallet(e.target.value)}
+          />
+          <button onClick={handlePassPublicKey}>Analyze Wallet</button>
+        </div>
+        {!publicKey && (
           <button className="wbtn" onClick={connectButton}>
-            Connect Your Metamask Wallet
+            Connect Your MetaMask Wallet
           </button>
         )}
         {msg && <p>{msg}</p>}
         {apiError && <p>{apiError}</p>} {/* Display API errors */}
-        {publicKey && !analyzed && (
-          <button
-            className="dbtn"
-            onClick={handlePassPublicKey}
-            style={{ display: publicKey === null ? "none" : "block" }}
-          >
-            Analyze Your Wallet
-          </button>
-        )}
         {buttonPressed && data && (
-          <div
-            className="walletHeader"
-            style={{
-              fontSize: "1.7em",
-              margin: "15px auto",
-              padding: "0px 0px 30px",
-              textAlign: "center",
-              color: "lightblue",
-              width: "60vw",
-            }}
-          >
-            Even though you didn't give any approvals to this wallet risk
-            security tool, it is best to disconnect your wallet manually after
-            you are done reviewing your data.
-            <br />
-            <br />
-            Any blockchains with value on them will appear below for you to
-            select.
-          </div>
-        )}
-        {buttonPressed && publicKey !== null && (
           <div className="Transactions">
             <ChainSelector
               chains={chains}
@@ -200,28 +182,28 @@ function App() {
             <div className="summary">
               {netWorth && <div className="value">${netWorth.toFixed(2)}</div>}
               <WalletSummary
-                walletAddress={publicKey}
+                walletAddress={activeWallet}
                 chainId={chainId}
                 chains={chains}
                 txnSummaryData={txnSummaryData}
               />
               <TokenAllocation
                 chainId={chainId}
-                walletAddress={publicKey}
+                walletAddress={activeWallet}
                 data={data}
               />
             </div>
             <Api
-              publicKey={publicKey}
+              publicKey={activeWallet}
               chainId={chainId}
               txnSummaryData={txnSummaryData}
             />
             <div className="tokenTitle"> Historical Transactions</div>
-            <Transactions address={publicKey} chainId={chainId} />
+            <Transactions address={activeWallet} chainId={chainId} />
             <div className="tokenTitle">Token Balances</div>
-            <TokenBalances address={publicKey} chainId={chainId} />
+            <TokenBalances address={activeWallet} chainId={chainId} />
             <div className="tokenTitle">30 Day Token Value</div>
-            <Portfolio publicKey={publicKey} chainId={chainId} />
+            <Portfolio publicKey={activeWallet} chainId={chainId} />
           </div>
         )}
         <div className="footer">
