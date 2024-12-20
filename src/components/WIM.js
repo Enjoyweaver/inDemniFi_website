@@ -272,7 +272,6 @@ function WIMWalletCreation() {
         </div>
       )}
 
-      {/* Info Popup */}
       {showInfoPopup && (
         <div className="info-popup">
           <h3>Important Information</h3>
@@ -290,7 +289,13 @@ function WIMWalletCreation() {
             After viewing your seed phrase, you will be asked to input it again
             to confirm that you've written it down.
           </p>
-          <button className="confirm-button" onClick={createWallet}>
+          <button
+            className="confirm-button"
+            onClick={() => {
+              setShowInfoPopup(false);
+              createWallet();
+            }}
+          >
             I Understand
           </button>
         </div>
