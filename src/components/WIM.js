@@ -50,7 +50,8 @@ function WIMWalletCreation() {
   };
 
   const confirmSeedPhrase = () => {
-    if (userInputSeedPhrase.trim() === wallet.mnemonic.phrase) {
+    const inputPhrase = userInputSeedPhrase.join(" ").trim();
+    if (inputPhrase === wallet.mnemonic.phrase) {
       setSeedPhraseConfirmed(true);
       setErrorMessage("");
     } else {
@@ -319,16 +320,23 @@ function WIMWalletCreation() {
       {isNewWallet && !seedPhraseConfirmed && !showSeedPhrase && wallet && (
         <div className="seed-phrase-confirmation">
           <h3>Confirm Your Seed Phrase</h3>
-          <p>
-            Please enter your seed phrase to confirm that you've written it
-            down.
-          </p>
-          <textarea
-            rows="3"
-            cols="50"
-            value={userInputSeedPhrase}
-            onChange={(e) => setUserInputSeedPhrase(e.target.value)}
-          ></textarea>
+          <p>Please enter each word of your seed phrase in the boxes below.</p>
+          <div className="seed-phrase-inputs">
+            {wallet.mnemonic.phrase.split(" ").map((_, index) => (
+              <input
+                key={index}
+                type="text"
+                className="seed-word-input"
+                maxLength={15} // Adjust length as needed
+                value={userInputSeedPhrase[index] || ""}
+                onChange={(e) => {
+                  const newInput = [...userInputSeedPhrase];
+                  newInput[index] = e.target.value;
+                  setUserInputSeedPhrase(newInput);
+                }}
+              />
+            ))}
+          </div>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           <button className="confirm-button" onClick={confirmSeedPhrase}>
             Confirm Seed Phrase

@@ -173,11 +173,11 @@
 }
 
 .gray-text {
-  color: #808080; /* Color for non-DeFi text */
+  color: #808080;
 }
 
 .defi-text {
-  color: #004aad; /* Color for DeFi text */
+  color: #004aad;
 }
 
 .walletHeader {
@@ -999,4 +999,69 @@
 .pageTabButton:focus {
   outline: none; /* Remove default focus outline */
   border: 1px solid #fff; /* White border for focus */
+}
+
+.protocolsVisitedContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.protocolItem {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.protocolItem h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.transactionDetails table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.transactionDetails th,
+.transactionDetails td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.transactionDetails th {
+  background-color: #004aad;
+  color: white;
+}
+
+.transactionDetails tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.seed-phrase-confirmation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.seed-phrase-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.seed-word-input {
+  padding: 3px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
