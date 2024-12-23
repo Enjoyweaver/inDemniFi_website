@@ -19,9 +19,7 @@ const Body = () => {
       <br />
       <br />
       During the development of the Insurance Wallet, we've come to realize that
-      our wallet risk analysis tool could be a valuable tool for others. With
-      the support of a grant from Covalent for API credits over the next year,
-      we are excited to offer this tool to the public free of charge.
+      our wallet risk analysis tool could be a valuable tool for others.
       <br />
       <br />
       Connect your wallet to view analysis of your transaction history and open
