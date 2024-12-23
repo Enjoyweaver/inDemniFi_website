@@ -12,9 +12,10 @@ const Body = () => {
         width: "60vw",
       }}
     >
-      The Insurance Wallet is here to help you understand and manage risks as
-      you navigate Web3. It gives you insight into your onchain activities,
-      showing you where risks might be and helping you stay in control.
+      We're currently developing the Insurance Wallet, which is here to help you
+      understand and manage risks as you navigate Web3. It gives you insight
+      into your onchain activities, showing you where risks might be and helping
+      you stay in control.
       <br />
       <br />
       During the development of the Insurance Wallet, we've come to realize that
